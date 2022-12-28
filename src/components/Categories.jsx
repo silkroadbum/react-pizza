@@ -11,6 +11,7 @@ function Categories() {
         {categories &&
           categories.map((category, index) => (
             <li
+              key={index}
               onClick={() => setActiveCategory(index)}
               className={activeCategory === index ? 'active' : ''}>
               {category}
