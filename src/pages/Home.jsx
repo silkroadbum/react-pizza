@@ -1,9 +1,23 @@
+import { useState, useEffect } from 'react';
+
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 
-function Home({ items, isLoading }) {
+function Home() {
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoadnig] = useState(true);
+
+  useEffect(() => {
+    fetch('https://63ac4a95da81ba97617fdf18.mockapi.io/items')
+      .then((res) => res.json())
+      .then((arr) => {
+        setItems(arr);
+        setIsLoadnig(false);
+      });
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="container">
       <div className="content__top">
