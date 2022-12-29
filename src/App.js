@@ -19,18 +19,17 @@ function App() {
         setItems(arr);
         setIsLoadnig(false);
       });
+    window.scrollTo(0, 0);
   }, []);
   return (
     <div className="wrapper">
       <Header />
       <div className="content">
-        <div className="container">
-          <Routes>
-            <Route path="/" element={<Home items={items} isLoading={isLoading} />} />
-            <Route path="cart" element={<Cart />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<Home items={items} isLoading={isLoading} />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </div>
     </div>
   );

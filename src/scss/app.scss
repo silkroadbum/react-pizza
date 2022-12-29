@@ -329,4 +329,9 @@ body {
       font-size: 18px;
     }
   }
+
+  .content__items {
+    display: flex;
+    flex-direction: column;
+  }
 }
