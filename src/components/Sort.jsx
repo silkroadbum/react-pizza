@@ -4,11 +4,13 @@ function Sort({ value, onChangeSortType }) {
   const [open, setOpen] = useState(false);
 
   const sortNames = [
-    { name: 'популярности', sortProperty: 'rating' },
-    { name: 'цене', sortProperty: 'price' },
-    { name: 'алфавиту', sortProperty: 'title' },
+    { name: 'популярности (убыв.)', sortProperty: 'rating' },
+    { name: 'популярности (возр.)', sortProperty: '-rating' },
+    { name: 'цене (убыв.)', sortProperty: 'price' },
+    { name: 'цене (возр.)', sortProperty: '-price' },
+    { name: 'алфавиту (убыв.)', sortProperty: 'title' },
+    { name: 'алфавиту (возр.)', sortProperty: '-title' },
   ];
-  let choosenSort = sortNames[value];
 
   const onClickListItem = (i) => {
     onChangeSortType(i);
@@ -30,17 +32,17 @@ function Sort({ value, onChangeSortType }) {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpen(!open)}>{choosenSort}</span>
+        <span onClick={() => setOpen(!open)}>{value.name}</span>
       </div>
       {open && (
         <div className="sort__popup">
           <ul>
-            {sortNames.map((name, i) => (
+            {sortNames.map((obj, i) => (
               <li
                 key={i}
-                onClick={() => onClickListItem(i)}
-                className={value === i ? 'active' : ''}>
-                {name}
+                onClick={() => onClickListItem(obj)}
+                className={value.name === sortNames[i].name ? 'active' : ''}>
+                {obj.name}
               </li>
             ))}
           </ul>

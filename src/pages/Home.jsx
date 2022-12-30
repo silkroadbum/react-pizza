@@ -9,15 +9,21 @@ function Home() {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoadnig] = useState(true);
   const [activeCategory, setActiveCategory] = useState(0);
-  const [sortType, setSortType] = useState({});
+  const [sortType, setSortType] = useState({
+    name: 'популярности (убыв.)',
+    sortProperty: 'rating',
+  });
 
   useEffect(() => {
     setIsLoadnig(true);
 
     const category = activeCategory ? `category=${activeCategory}` : '';
-    const sortName = sortType;
+    const sortName = sortType.sortProperty.replace('-', '');
+    const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
 
-    fetch(`https://63ac4a95da81ba97617fdf18.mockapi.io/items?${category}&sortBy=${sortName}`)
+    fetch(
+      `https://63ac4a95da81ba97617fdf18.mockapi.io/items?${category}&sortBy=${sortName}&order=${order}`,
+    )
       .then((res) => res.json())
       .then((arr) => {
         setItems(arr);
@@ -29,7 +35,7 @@ function Home() {
     <div className="container">
       <div className="content__top">
         <Categories value={activeCategory} onChangeCategory={(i) => setActiveCategory(i)} />
-        <Sort value={sortType} onChangeSortType={(i) => setSortType(i)} />
+        <Sort value={sortType} onChangeSortType={(obj) => setSortType(obj)} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
