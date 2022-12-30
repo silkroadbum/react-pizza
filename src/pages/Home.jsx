@@ -9,21 +9,22 @@ function Home() {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoadnig] = useState(true);
   const [activeCategory, setActiveCategory] = useState(0);
-  const [sortType, setSortType] = useState(0);
+  const [sortType, setSortType] = useState({});
 
   useEffect(() => {
     setIsLoadnig(true);
 
     const category = activeCategory ? `category=${activeCategory}` : '';
+    const sortName = sortType;
 
-    fetch(`https://63ac4a95da81ba97617fdf18.mockapi.io/items?${category}`)
+    fetch(`https://63ac4a95da81ba97617fdf18.mockapi.io/items?${category}&sortBy=${sortName}`)
       .then((res) => res.json())
       .then((arr) => {
         setItems(arr);
         setIsLoadnig(false);
       });
     window.scrollTo(0, 0);
-  }, [activeCategory]);
+  }, [activeCategory, sortType]);
   return (
     <div className="container">
       <div className="content__top">
