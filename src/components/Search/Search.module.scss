@@ -11,10 +11,23 @@
   left: 12px;
 }
 
+.button {
+  position: absolute;
+  opacity: 0.3;
+  width: 24px;
+  width: 24px;
+  top: 12px;
+  right: 12px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
 .input {
   border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 12px 20px;
-  padding-left: 40px;
+  padding: 12px 40px;
   width: 400px;
   border-radius: 10px;
   font-size: 16px;
