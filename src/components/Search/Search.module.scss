@@ -1,0 +1,31 @@
+.root {
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  opacity: 0.3;
+  top: 12px;
+  left: 12px;
+}
+
+.input {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 12px 20px;
+  padding-left: 40px;
+  width: 400px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  transition: all 0.2s ease-in-out;
+
+  &:focus {
+    border-color: rgba(0, 0, 0, 0.3);
+  }
+
+  @media (max-width: 550px) {
+    width: 280px;
+  }
+}

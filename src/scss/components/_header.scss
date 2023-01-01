@@ -13,18 +13,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
 
-    @media (max-width: 660px) {
+    @media (max-width: 1145px) {
       flex-direction: column;
     }
   }
 
   &__logo {
     display: flex;
-
-    @media (max-width: 660px) {
-      margin-bottom: 20px;
-    }
 
     img {
       margin-right: 15px;
