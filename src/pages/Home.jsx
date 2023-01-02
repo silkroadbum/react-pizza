@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { AppContext } from '../App';
+import { setActiveCategory } from '../redux/slices/filterSlice';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -9,9 +11,11 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 
 function Home() {
+  const activeCategory = useSelector((state) => state.filter.activeCategory);
+  const dispatch = useDispatch();
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoadnig] = useState(true);
-  const [activeCategory, setActiveCategory] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortType, setSortType] = useState({
     name: 'популярности (убыв.)',
@@ -38,13 +42,17 @@ function Home() {
     window.scrollTo(0, 0);
   }, [activeCategory, sortType, searchValue, currentPage]);
 
+  const onChangeCategory = (id) => {
+    dispatch(setActiveCategory(id));
+  };
+
   const skeleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
   const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories value={activeCategory} onChangeCategory={(i) => setActiveCategory(i)} />
+        <Categories value={activeCategory} onChangeCategory={onChangeCategory} />
         <Sort value={sortType} onChangeSortType={(obj) => setSortType(obj)} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
