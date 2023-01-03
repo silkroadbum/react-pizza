@@ -1,4 +1,5 @@
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState, useCallback } from 'react';
+import debounce from 'lodash.debounce';
 
 import { AppContext } from '../../App';
 
@@ -8,12 +9,24 @@ import clearIcon from '../../assets/img/clear-icon.svg';
 import styles from './Search.module.scss';
 
 const Search = () => {
-  const { searchValue, setSearchValue } = useContext(AppContext);
+  const [value, setValue] = useState('');
+  const { setSearchValue } = useContext(AppContext);
   const inputRef = useRef();
 
   const onClickClear = () => {
     setSearchValue('');
+    setValue('');
     inputRef.current.focus();
+  };
+
+  const updateSearchValue = useCallback(
+    debounce((str) => setSearchValue(str), 300),
+    [],
+  );
+
+  const onChangeInput = (evt) => {
+    setValue(evt.target.value);
+    updateSearchValue(evt.target.value);
   };
 
   return (
@@ -21,12 +34,12 @@ const Search = () => {
       <img src={searchIcon} alt="Иконка поиска." className={styles.icon} />
       <input
         ref={inputRef}
-        onChange={(evt) => setSearchValue(evt.target.value)}
+        onChange={onChangeInput}
         className={styles.input}
         placeholder="Поиск пиццы ..."
-        value={searchValue}
+        value={value}
       />
-      {searchValue && (
+      {value && (
         <img
           onClick={onClickClear}
           src={clearIcon}
