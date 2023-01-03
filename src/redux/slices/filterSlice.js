@@ -21,6 +21,6 @@ const filterSlice = createSlice({
   },
 });
 
-export const { setActiveCategory } = filterSlice.actions;
+export const { setActiveCategory, setSortType } = filterSlice.actions;
 
 export default filterSlice.reducer;

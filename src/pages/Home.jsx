@@ -11,16 +11,13 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 
 function Home() {
-  const activeCategory = useSelector((state) => state.filter.activeCategory);
+  const { activeCategory, sortType } = useSelector((state) => state.filter);
   const dispatch = useDispatch();
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoadnig] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortType, setSortType] = useState({
-    name: 'популярности (убыв.)',
-    sortProperty: 'rating',
-  });
+
   const { searchValue } = useContext(AppContext);
 
   useEffect(() => {
@@ -53,7 +50,7 @@ function Home() {
     <div className="container">
       <div className="content__top">
         <Categories value={activeCategory} onChangeCategory={onChangeCategory} />
-        <Sort value={sortType} onChangeSortType={(obj) => setSortType(obj)} />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeleton : pizzas}</div>
