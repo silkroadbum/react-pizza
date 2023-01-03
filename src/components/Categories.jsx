@@ -6,6 +6,7 @@ const categories = ['Все', 'Мясные', 'Вегетарианские', '�
 function Categories() {
   const activeCategory = useSelector((state) => state.filter.activeCategory);
   const dispatch = useDispatch();
+
   const onChangeCategory = (index) => {
     dispatch(setActiveCategory(index));
   };

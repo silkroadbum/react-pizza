@@ -1,6 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import qs from 'qs';
+
+import { setFilters } from '../redux/slices/filterSlice';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -8,14 +12,20 @@ import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 
+import { sortNames } from '../components/Sort';
+
 function Home() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { activeCategory, sortType, currentPage, searchValue } = useSelector(
     (state) => state.filter,
   );
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoadnig] = useState(true);
+  const isSearch = useRef(false);
+  const isMounted = useRef(false);
 
-  useEffect(() => {
+  const fetchPizzas = () => {
     setIsLoadnig(true);
 
     const category = activeCategory ? `&category=${activeCategory}` : '';
@@ -31,7 +41,43 @@ function Home() {
         setItems(res.data);
         setIsLoadnig(false);
       });
+  };
+
+  // Если был первый рендер и были изменены параметры, то в URL добавляется строка запроса с фильтрами
+  useEffect(() => {
+    if (isMounted.current) {
+      const queryString = qs.stringify({
+        sortProperty: sortType.sortProperty,
+        activeCategory,
+        currentPage,
+      });
+      navigate(`?${queryString}`);
+    }
+    isMounted.current = true;
+  }, [activeCategory, sortType, searchValue, currentPage, navigate]);
+
+  // Если был первый рендер, то проверяем URL-параметры и сохраняем в редаксе
+  useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+
+      const sort = sortNames.find((obj) => obj.sortProperty === params.sortProperty);
+
+      dispatch(setFilters({ ...params, sortType: sort }));
+      isSearch.current = true;
+    }
+  }, [dispatch]);
+
+  // Если был первый рендер, то заправшиваем пиццы
+  useEffect(() => {
     window.scrollTo(0, 0);
+
+    if (!isSearch.current) {
+      fetchPizzas();
+    }
+
+    isSearch.current = false;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCategory, sortType, searchValue, currentPage]);
 
   const skeleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
