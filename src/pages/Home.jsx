@@ -1,8 +1,6 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-
-import { AppContext } from '../App';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -11,12 +9,11 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 
 function Home() {
-  const { activeCategory, sortType, currentPage } = useSelector((state) => state.filter);
-
+  const { activeCategory, sortType, currentPage, searchValue } = useSelector(
+    (state) => state.filter,
+  );
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoadnig] = useState(true);
-
-  const { searchValue } = useContext(AppContext);
 
   useEffect(() => {
     setIsLoadnig(true);

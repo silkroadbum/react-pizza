@@ -1,9 +1,8 @@
-import { useContext, useRef, useCallback } from 'react';
+import { useRef, useCallback } from 'react';
 import debounce from 'lodash.debounce';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AppContext } from '../../App';
-import { setInputValue } from '../../redux/slices/filterSlice';
+import { setInputValue, setSearchValue } from '../../redux/slices/filterSlice';
 
 import searchIcon from '../../assets/img/search-icon.svg';
 import clearIcon from '../../assets/img/clear-icon.svg';
@@ -14,18 +13,17 @@ const Search = () => {
   const inputValue = useSelector((state) => state.filter.inputValue);
   const dispatch = useDispatch();
 
-  const { setSearchValue } = useContext(AppContext);
   const inputRef = useRef();
 
   const onClickClear = () => {
-    setSearchValue('');
+    dispatch(setSearchValue(''));
     dispatch(setInputValue(''));
     inputRef.current.focus();
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateSearchValue = useCallback(
-    debounce((str) => setSearchValue(str), 300),
+    debounce((str) => dispatch(setSearchValue(str)), 300),
     [],
   );
 
