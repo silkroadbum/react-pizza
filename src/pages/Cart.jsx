@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 function Cart() {
   return (
-    <div class="container container--cart">
+    <div className="container container--cart">
       <div className="cart">
         <div className="cart__top">
           <h2 className="content__title">
