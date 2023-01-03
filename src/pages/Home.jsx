@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import { AppContext } from '../App';
-import { setActiveCategory, setCurrentPage } from '../redux/slices/filterSlice';
+import { setActiveCategory } from '../redux/slices/filterSlice';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -43,10 +43,6 @@ function Home() {
     dispatch(setActiveCategory(id));
   };
 
-  const onChangePage = (num) => {
-    dispatch(setCurrentPage(num));
-  };
-
   const skeleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
   const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
 
@@ -58,7 +54,7 @@ function Home() {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeleton : pizzas}</div>
-      <Pagination currentPage={currentPage} onChangePage={onChangePage} />
+      <Pagination />
     </div>
   );
 }
