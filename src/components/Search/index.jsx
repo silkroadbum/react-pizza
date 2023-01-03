@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 
 import { AppContext } from '../../App';
 
@@ -9,11 +9,18 @@ import styles from './Search.module.scss';
 
 const Search = () => {
   const { searchValue, setSearchValue } = useContext(AppContext);
+  const inputRef = useRef();
+
+  const onClickClear = () => {
+    setSearchValue('');
+    inputRef.current.focus();
+  };
 
   return (
     <div className={styles.root}>
       <img src={searchIcon} alt="Иконка поиска." className={styles.icon} />
       <input
+        ref={inputRef}
         onChange={(evt) => setSearchValue(evt.target.value)}
         className={styles.input}
         placeholder="Поиск пиццы ..."
@@ -21,7 +28,7 @@ const Search = () => {
       />
       {searchValue && (
         <img
-          onClick={() => setSearchValue('')}
+          onClick={onClickClear}
           src={clearIcon}
           alt="Крестик для очистки поля поиска."
           className={styles.button}
