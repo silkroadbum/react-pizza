@@ -29,6 +29,22 @@ body {
     padding: 20px 0;
   }
 
+  &__error-info {
+    margin: 100px auto;
+    max-width: 600px;
+    text-align: center;
+
+    h2 {
+      font-size: 38px;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 24px;
+    }
+  }
+
   &__title {
     margin: 35px 0;
     font-size: 38px;

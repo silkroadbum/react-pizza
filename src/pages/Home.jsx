@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import qs from 'qs';
 
 import { setFilters } from '../redux/slices/filterSlice';
-import { setItems } from '../redux/slices/pizzaSlise';
+import { fetchPizzas } from '../redux/slices/pizzaSlise';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -14,6 +13,7 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 
 import { sortNames } from '../components/Sort';
+import { categories } from '../components/Categories';
 
 function Home() {
   const dispatch = useDispatch();
@@ -21,29 +21,17 @@ function Home() {
   const { activeCategory, sortType, currentPage, searchValue } = useSelector(
     (state) => state.filter,
   );
-  const items = useSelector((state) => state.pizza.items);
-  const [isLoading, setIsLoadnig] = useState(true);
+  const { items, status } = useSelector((state) => state.pizza);
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const fetchPizzas = async () => {
-    setIsLoadnig(true);
-
+  const getPizzas = async () => {
     const category = activeCategory ? `&category=${activeCategory}` : '';
     const sortName = sortType.sortProperty.replace('-', '');
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    try {
-      const { data } = await axios.get(
-        `https://63ac4a95da81ba97617fdf18.mockapi.io/items?page=${currentPage}&limit=4${category}&sortBy=${sortName}&order=${order}${search}`,
-      );
-      dispatch(setItems(data));
-    } catch (error) {
-      console.error('Ошибка получения данных с сервера', error);
-    } finally {
-      setIsLoadnig(false);
-    }
+    dispatch(fetchPizzas({ category, sortName, order, search, currentPage }));
 
     window.scrollTo(0, 0);
   };
@@ -76,7 +64,7 @@ function Home() {
   // Если был первый рендер, то заправшиваем пиццы
   useEffect(() => {
     if (!isSearch.current) {
-      fetchPizzas();
+      getPizzas();
     }
 
     isSearch.current = false;
@@ -92,9 +80,18 @@ function Home() {
         <Categories />
         <Sort />
       </div>
-      <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{isLoading ? skeleton : pizzas}</div>
-      <Pagination />
+      <h2 className="content__title">{categories[activeCategory]} пиццы</h2>
+      {status === 'error' ? (
+        <div className="content__error-info">
+          <h2>Произошла ошибка 😕</h2>
+          <p>К сожалению не удалось получить пиццы. Попробуйте повторить попытку позже.</p>
+        </div>
+      ) : (
+        <>
+          <div className="content__items">{status === 'loading' ? skeleton : pizzas}</div>
+          <Pagination />
+        </>
+      )}
     </div>
   );
 }
