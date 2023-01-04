@@ -5,6 +5,7 @@ import axios from 'axios';
 import qs from 'qs';
 
 import { setFilters } from '../redux/slices/filterSlice';
+import { setItems } from '../redux/slices/pizzaSlise';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -20,7 +21,7 @@ function Home() {
   const { activeCategory, sortType, currentPage, searchValue } = useSelector(
     (state) => state.filter,
   );
-  const [items, setItems] = useState([]);
+  const items = useSelector((state) => state.pizza.items);
   const [isLoading, setIsLoadnig] = useState(true);
   const isSearch = useRef(false);
   const isMounted = useRef(false);
@@ -37,7 +38,7 @@ function Home() {
       const { data } = await axios.get(
         `https://63ac4a95da81ba97617fdf18.mockapi.io/items?page=${currentPage}&limit=4${category}&sortBy=${sortName}&order=${order}${search}`,
       );
-      setItems(data);
+      dispatch(setItems(data));
     } catch (error) {
       console.error('Ошибка получения данных с сервера', error);
     } finally {
