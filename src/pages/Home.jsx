@@ -25,7 +25,7 @@ function Home() {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     setIsLoadnig(true);
 
     const category = activeCategory ? `&category=${activeCategory}` : '';
@@ -33,14 +33,18 @@ function Home() {
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    axios
-      .get(
+    try {
+      const { data } = await axios.get(
         `https://63ac4a95da81ba97617fdf18.mockapi.io/items?page=${currentPage}&limit=4${category}&sortBy=${sortName}&order=${order}${search}`,
-      )
-      .then((res) => {
-        setItems(res.data);
-        setIsLoadnig(false);
-      });
+      );
+      setItems(data);
+    } catch (error) {
+      console.error('Ошибка получения данных с сервера', error);
+    } finally {
+      setIsLoadnig(false);
+    }
+
+    window.scrollTo(0, 0);
   };
 
   // Если был первый рендер и были изменены параметры, то в URL добавляется строка запроса с фильтрами
@@ -70,8 +74,6 @@ function Home() {
 
   // Если был первый рендер, то заправшиваем пиццы
   useEffect(() => {
-    window.scrollTo(0, 0);
-
     if (!isSearch.current) {
       fetchPizzas();
     }
