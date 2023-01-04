@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
 
-import { setFilters } from '../redux/slices/filterSlice';
+import { setFilters, selectFilter } from '../redux/slices/filterSlice';
 import { fetchPizzas } from '../redux/slices/pizzaSlise';
 
 import Categories from '../components/Categories';
@@ -15,13 +15,13 @@ import Pagination from '../components/Pagination';
 import { sortNames } from '../components/Sort';
 import { categories } from '../components/Categories';
 
+import { selectPizza } from '../redux/slices/pizzaSlise';
+
 function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { activeCategory, sortType, currentPage, searchValue } = useSelector(
-    (state) => state.filter,
-  );
-  const { items, status } = useSelector((state) => state.pizza);
+  const { activeCategory, sortType, currentPage, searchValue } = useSelector(selectFilter);
+  const { items, status } = useSelector(selectPizza);
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 

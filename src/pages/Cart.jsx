@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { clearItems } from '../redux/slices/cartSlice';
+import { clearItems, selectCart } from '../redux/slices/cartSlice';
 
 import CartItem from '../components/CartItem';
 import CartEmpty from '../components/CartEmpty';
 
 function Cart() {
   const dispatch = useDispatch();
-  const { items, totalPrice, countPizzas } = useSelector((state) => state.cart);
+  const { items, totalPrice, countPizzas } = useSelector(selectCart);
 
   const onClickClearCart = () => {
     if (window.confirm('Очистить корзину?')) {

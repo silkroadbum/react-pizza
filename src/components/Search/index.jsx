@@ -2,7 +2,7 @@ import { useRef, useCallback } from 'react';
 import debounce from 'lodash.debounce';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setInputValue, setSearchValue } from '../../redux/slices/filterSlice';
+import { setInputValue, setSearchValue, selectFilter } from '../../redux/slices/filterSlice';
 
 import searchIcon from '../../assets/img/search-icon.svg';
 import clearIcon from '../../assets/img/clear-icon.svg';
@@ -10,7 +10,7 @@ import clearIcon from '../../assets/img/clear-icon.svg';
 import styles from './Search.module.scss';
 
 const Search = () => {
-  const inputValue = useSelector((state) => state.filter.inputValue);
+  const { inputValue } = useSelector(selectFilter);
   const dispatch = useDispatch();
 
   const inputRef = useRef();
