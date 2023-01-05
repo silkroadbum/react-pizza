@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { addItem, selectCartItemById } from '../../redux/slices/cartSlice';
 
-const nameTypes = {
+export const nameTypes = {
   0: 'тонкое',
   1: 'традиционное',
 };
