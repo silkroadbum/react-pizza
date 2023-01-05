@@ -19,7 +19,7 @@ const FullPizza = () => {
     }
 
     fetchPizza();
-  }, [id]);
+  }, [id, navigate]);
 
   return (
     <div className="container">
