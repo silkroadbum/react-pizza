@@ -4,10 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { addItem, selectCartItemById } from '../../redux/slices/cartSlice';
 
-export const nameTypes = {
-  0: 'тонкое',
-  1: 'традиционное',
-};
+export const nameTypes = ['тонкое', 'традиционное'];
 
 function PizzaBlock({ id, title, price, imageUrl, types, sizes }) {
   const [activeSize, setActiveSize] = useState(0);
