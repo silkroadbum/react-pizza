@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -5,8 +7,14 @@ import { Link } from 'react-router-dom';
 
 import { nameTypes } from '../components/PizzaBlock';
 
-const FullPizza = () => {
-  const [pizza, setPizza] = useState();
+const FullPizza: React.FC = () => {
+  const [pizza, setPizza] = useState<{
+    imageUrl: string;
+    title: string;
+    price: number;
+    types: number[];
+    sizes: number[];
+  }>();
   const { id } = useParams();
   const navigate = useNavigate();
 
