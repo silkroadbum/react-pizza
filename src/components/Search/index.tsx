@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react';
+import React from 'react';
 import debounce from 'lodash.debounce';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,25 +9,25 @@ import clearIcon from '../../assets/img/clear-icon.svg';
 
 import styles from './Search.module.scss';
 
-const Search = () => {
+const Search: React.FC = () => {
   const { inputValue } = useSelector(selectFilter);
   const dispatch = useDispatch();
 
-  const inputRef = useRef();
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const onClickClear = () => {
     dispatch(setSearchValue(''));
     dispatch(setInputValue(''));
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const updateSearchValue = useCallback(
-    debounce((str) => dispatch(setSearchValue(str)), 300),
+  const updateSearchValue = React.useCallback(
+    debounce((str: string) => dispatch(setSearchValue(str)), 300),
     [],
   );
 
-  const onChangeInput = (evt) => {
+  const onChangeInput = (evt: any) => {
     dispatch(setInputValue(evt.target.value));
     updateSearchValue(evt.target.value);
   };

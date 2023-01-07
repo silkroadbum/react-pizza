@@ -8,7 +8,7 @@ function Pagination() {
   const { currentPage } = useSelector(selectFilter);
   const dispatch = useDispatch();
 
-  const onChangePage = (evt) => {
+  const onChangePage = (evt: any) => {
     dispatch(setCurrentPage(evt.selected + 1));
   };
 
@@ -22,7 +22,6 @@ function Pagination() {
       pageCount={3}
       forcePage={currentPage - 1}
       previousLabel="<"
-      renderOnZeroPageCount={null}
     />
   );
 }
