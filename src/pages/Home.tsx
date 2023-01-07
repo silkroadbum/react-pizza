@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
@@ -17,13 +17,13 @@ import { categories } from '../components/Categories';
 
 import { selectPizza } from '../redux/slices/pizzaSlise';
 
-function Home() {
+const Home: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { activeCategory, sortType, currentPage, searchValue } = useSelector(selectFilter);
   const { items, status } = useSelector(selectPizza);
-  const isSearch = useRef(false);
-  const isMounted = useRef(false);
+  const isSearch = React.useRef(false);
+  const isMounted = React.useRef(false);
 
   const getPizzas = async () => {
     const category = activeCategory ? `&category=${activeCategory}` : '';
@@ -31,13 +31,22 @@ function Home() {
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    dispatch(fetchPizzas({ category, sortName, order, search, currentPage }));
+    dispatch(
+      // @ts-ignore
+      fetchPizzas({
+        category,
+        sortName,
+        order,
+        search,
+        currentPage,
+      }),
+    );
 
     window.scrollTo(0, 0);
   };
 
   // Если был первый рендер и были изменены параметры, то в URL добавляется строка запроса с фильтрами
-  useEffect(() => {
+  React.useEffect(() => {
     if (isMounted.current) {
       const queryString = qs.stringify({
         sortProperty: sortType.sortProperty,
@@ -50,7 +59,7 @@ function Home() {
   }, [activeCategory, sortType, searchValue, currentPage, navigate]);
 
   // Если был первый рендер, то проверяем URL-параметры и сохраняем в редаксе
-  useEffect(() => {
+  React.useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
 
@@ -62,7 +71,7 @@ function Home() {
   }, [dispatch]);
 
   // Если был первый рендер, то заправшиваем пиццы
-  useEffect(() => {
+  React.useEffect(() => {
     if (!isSearch.current) {
       getPizzas();
     }
@@ -72,7 +81,7 @@ function Home() {
   }, [activeCategory, sortType, searchValue, currentPage]);
 
   const skeleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
-  const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+  const pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
 
   return (
     <div className="container">
@@ -94,6 +103,6 @@ function Home() {
       )}
     </div>
   );
-}
+};
 
 export default Home;
