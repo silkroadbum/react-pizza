@@ -3,7 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
 
-import { setFilters, selectFilter } from '../redux/slices/filterSlice';
+import {
+  setFilters,
+  setActiveCategory,
+  selectFilter,
+  setCurrentPage,
+} from '../redux/slices/filterSlice';
 import { fetchPizzas } from '../redux/slices/pizzaSlise';
 
 import Categories from '../components/Categories';
@@ -80,13 +85,21 @@ const Home: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCategory, sortType, searchValue, currentPage]);
 
+  const onChangeCategory = (index: number) => {
+    dispatch(setActiveCategory(index));
+  };
+
+  const onChangePage = (page: number) => {
+    dispatch(setCurrentPage(page));
+  };
+
   const skeleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
   const pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories />
+        <Categories value={activeCategory} onChangeCategory={onChangeCategory} />
         <Sort />
       </div>
       <h2 className="content__title">{categories[activeCategory]} пиццы</h2>
@@ -98,7 +111,7 @@ const Home: React.FC = () => {
       ) : (
         <>
           <div className="content__items">{status === 'loading' ? skeleton : pizzas}</div>
-          <Pagination />
+          <Pagination page={currentPage} onChangePage={onChangePage} />
         </>
       )}
     </div>
