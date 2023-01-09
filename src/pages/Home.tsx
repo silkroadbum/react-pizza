@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
 
@@ -9,7 +9,7 @@ import {
   selectFilter,
   setCurrentPage,
 } from '../redux/slices/filterSlice';
-import { fetchPizzas } from '../redux/slices/pizzaSlise';
+import { fetchPizzas, SearchPizzaParams } from '../redux/slices/pizzaSlise';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -21,9 +21,10 @@ import { sortNames } from '../components/Sort';
 import { categories } from '../components/Categories';
 
 import { selectPizza } from '../redux/slices/pizzaSlise';
+import { useAppDispatch } from '../redux/store';
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { activeCategory, sortType, currentPage, searchValue } = useSelector(selectFilter);
   const { items, status } = useSelector(selectPizza);
@@ -37,7 +38,6 @@ const Home: React.FC = () => {
     const search = searchValue ? `&search=${searchValue}` : '';
 
     dispatch(
-      // @ts-ignore
       fetchPizzas({
         category,
         sortName,
@@ -66,11 +66,20 @@ const Home: React.FC = () => {
   // Если был первый рендер, то проверяем URL-параметры и сохраняем в редаксе
   React.useEffect(() => {
     if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
+      const params = qs.parse(window.location.search.substring(1)) as unknown as SearchPizzaParams;
 
-      const sort = sortNames.find((obj) => obj.sortProperty === params.sortProperty);
+      const sort = sortNames.find((obj) => obj.sortProperty === params.sortName);
 
-      dispatch(setFilters({ ...params, sortType: sort }));
+      dispatch(
+        setFilters({
+          activeCategory: Number(params.category),
+          currentPage: params.currentPage,
+          inputValue: params.order,
+          searchValue: params.search,
+          sortType: sort || sortNames[0],
+        }),
+      );
+
       isSearch.current = true;
     }
   }, [dispatch]);

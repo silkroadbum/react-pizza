@@ -1,22 +1,22 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setSortType, selectSortType } from '../redux/slices/filterSlice';
+import { setSortType, selectSortType, SortPropertyEnum } from '../redux/slices/filterSlice';
 
 type SortItem = {
   name: string;
-  sortProperty: string;
+  sortProperty: SortPropertyEnum;
 };
 
 type PopupClick = MouseEvent & { path: Node[] };
 
 export const sortNames: SortItem[] = [
-  { name: 'популярности (убыв.)', sortProperty: 'rating' },
-  { name: 'популярности (возр.)', sortProperty: '-rating' },
-  { name: 'цене (убыв.)', sortProperty: 'price' },
-  { name: 'цене (возр.)', sortProperty: '-price' },
-  { name: 'алфавиту (убыв.)', sortProperty: 'title' },
-  { name: 'алфавиту (возр.)', sortProperty: '-title' },
+  { name: 'популярности (убыв.)', sortProperty: SortPropertyEnum.RATING_DESC },
+  { name: 'популярности (возр.)', sortProperty: SortPropertyEnum.RATING_ASC },
+  { name: 'цене (убыв.)', sortProperty: SortPropertyEnum.PRICE_DESC },
+  { name: 'цене (возр.)', sortProperty: SortPropertyEnum.PRICE_ASC },
+  { name: 'алфавиту (убыв.)', sortProperty: SortPropertyEnum.TITLE_DESC },
+  { name: 'алфавиту (возр.)', sortProperty: SortPropertyEnum.TITLE_ASC },
 ];
 
 function Sort() {
