@@ -3,13 +3,10 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
 
-import {
-  setFilters,
-  setActiveCategory,
-  selectFilter,
-  setCurrentPage,
-} from '../redux/slices/filterSlice';
-import { fetchPizzas, SearchPizzaParams } from '../redux/slices/pizzaSlise';
+import { setFilters, setActiveCategory, setCurrentPage } from '../redux/slices/filter/slice';
+import { selectFilter } from '../redux/slices/filter/selectors';
+import { fetchPizzas } from '../redux/slices/pizza/asyncActions';
+import { SearchPizzaParams } from '../redux/slices/pizza/types';
 
 import Categories from '../components/Categories';
 import SortPopup from '../components/SortPopup';
@@ -20,7 +17,7 @@ import Pagination from '../components/Pagination';
 import { sortNames } from '../components/SortPopup';
 import { categories } from '../components/Categories';
 
-import { selectPizza } from '../redux/slices/pizzaSlise';
+import { selectPizza } from '../redux/slices/pizza/selectors';
 import { useAppDispatch } from '../redux/store';
 
 const Home: React.FC = () => {
@@ -109,7 +106,7 @@ const Home: React.FC = () => {
     <div className="container">
       <div className="content__top">
         <Categories value={activeCategory} onChangeCategory={onChangeCategory} />
-        <SortPopup value={sortType}/>
+        <SortPopup value={sortType} />
       </div>
       <h2 className="content__title">{categories[activeCategory]} пиццы</h2>
       {status === 'error' ? (

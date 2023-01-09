@@ -2,7 +2,8 @@ import React from 'react';
 import debounce from 'lodash.debounce';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setInputValue, setSearchValue, selectFilter } from '../../redux/slices/filterSlice';
+import { setInputValue, setSearchValue } from '../../redux/slices/filter/slice';
+import { selectFilter } from '../../redux/slices/filter/selectors';
 
 import searchIcon from '../../assets/img/search-icon.svg';
 import clearIcon from '../../assets/img/clear-icon.svg';
