@@ -1,6 +1,4 @@
 import React from 'react';
-
-import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -8,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { nameTypes } from '../components/PizzaBlock';
 
 const FullPizza: React.FC = () => {
-  const [pizza, setPizza] = useState<{
+  const [pizza, setPizza] = React.useState<{
     imageUrl: string;
     title: string;
     price: number;
@@ -18,7 +16,7 @@ const FullPizza: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  React.useEffect(() => {
     async function fetchPizza() {
       try {
         const { data } = await axios.get(`https://63ac4a95da81ba97617fdf18.mockapi.io/items/${id}`);

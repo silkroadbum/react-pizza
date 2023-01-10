@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { selectCart } from '../redux/slices/cart/selectors';
 
-import Search from './Search';
+import { Search } from '../components';
 
 import logo from '../assets/img/pizza-logo.svg';
 
